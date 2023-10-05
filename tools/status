@@ -1,0 +1,2 @@
+#!/bin/bash
+du -a | grep main | awk '{print $2}' | sed -e 's/\/main\..*//' -e 's/\.//' -e 's/\///g' | sort | uniq

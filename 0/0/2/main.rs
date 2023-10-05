@@ -24,5 +24,5 @@ impl Iterator for Fib {
 
 fn main() {
     let fb = Fib::new();
-    println!("{}", fb.filter(|x| x%2 == 0).sum::<i32>());
+    println!("{}", fb.filter(|x| x % 2 == 0).sum::<i32>());
 }

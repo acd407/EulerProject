@@ -10,7 +10,7 @@ int main () {
         for (int elem = 0; elem < prime_p; elem++)
             if (!(i % prime[elem]))
                 goto loop;
-            prime[prime_p++] = i;
+        prime[prime_p++] = i;
         loop:
             i++;
     }
