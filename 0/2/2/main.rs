@@ -15,14 +15,13 @@ fn main() {
 
     let len = contents.len();
     let contents = &contents[1..len - 2];
-    let mut spd: Vec<&str> = contents.split("\",\"").collect();
-    spd.sort_by(|a, b| a.to_lowercase().cmp(&b.to_lowercase()));
+    let mut names: Vec<&str> = contents.split("\",\"").collect();
+    names.sort_by(|a, b| a.to_lowercase().cmp(&b.to_lowercase()));
     println!(
         "{}",
-        spd.iter()
+        names.iter()
             .enumerate()
             .map(|(index, item)| f(index as i32 + 1, item) as u64)
             .sum::<u64>()
     );
-    ()
 }
