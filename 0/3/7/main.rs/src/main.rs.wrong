@@ -1,0 +1,51 @@
+use std::collections::HashSet;
+use primal::*;
+
+const BPT: &[u64] = &[2,3,5,7];
+
+fn create_ptr(v:&Vec<u64>) -> Vec<u64> {
+    let mut r = Vec::new();
+    for i in v {
+        for j in BPT {
+            r.push(i*10+j);
+        }
+    }
+    return r;
+}
+
+fn create_ptl(v:&Vec<u64>) -> Vec<u64> {
+    let mut r = Vec::new();
+    for i in v {
+        for j in BPT {
+            let n_digits = i.ilog10() + 1;
+            r.push(i+j*10u64.pow(n_digits));
+        }
+    }
+    return r;
+}
+
+fn prime_l(x:u64) -> bool {
+    if x == 0 { return true;}
+    if ! is_prime(x) {return false;}
+    let n_digits = x.ilog10();
+    prime_l(x - x / 10u64.pow(n_digits) * 10u64.pow(n_digits))
+}
+
+fn prime_r(x:u64) -> bool {
+    if x == 0 { return true;}
+    if ! is_prime(x) {return false;}
+    prime_r(x / 10)
+}
+
+fn main() {
+    let mut hs = HashSet::new();
+    let mut lt = BPT.to_vec();
+    while !lt.is_empty() {
+        lt = create_ptl(&lt).into_iter().filter(|&x| prime_l(x)).map(|x| {hs.insert(x);dbg!(x);x}).collect();
+    }
+    let mut rt = BPT.to_vec();
+    while !rt.is_empty() {
+        rt = create_ptr(&rt).into_iter().filter(|&x| prime_r(x)).map(|x| {hs.insert(x);dbg!(x);x}).collect();
+    }
+    println!("{}", hs.into_iter().sum::<u64>());
+}

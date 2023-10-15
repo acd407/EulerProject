@@ -1,13 +1,7 @@
 fn palindrome(x: i32) -> bool {
     let s = x.to_string();
     let s = s.as_bytes().iter();
-    let s = s.clone().zip(s.rev());
-    for i in s {
-        if *i.0 != *i.1 {
-            return false;
-        }
-    }
-    return true;
+    s.clone().zip(s.rev()).all(|x| *x.0 == *x.1)
 }
 
 fn main() {
