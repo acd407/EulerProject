@@ -1,0 +1,58 @@
+use std::env;
+
+fn d_1(x: u32) -> u32 {
+    let l = x.ilog10();
+    if l == 0 {
+        return x;
+    }
+    d_1(10u32.pow(l) - 1) + (1 + x - 10u32.pow(l)) * (l + 1)
+}
+
+fn d(x: u32) -> u32 {
+    let l = x.ilog10();
+    let mut s = x / (l + 1);
+    let mut b = x;
+    while b - s > 1 {
+        if x < d_1((s+b)/2) {
+            b = (s+b)/2;
+        } else {
+            s = (s+b)/2;
+        }
+    }
+    s
+}
+
+fn dc(x :u32) -> u32 {
+    let y = d(x);
+    let index = x - d_1(y);
+    if index == 0 {
+        return y%10;
+    }
+    let mut z = y + 1;
+    let mut v = Vec::new();
+    while z > 0 {
+        v.push(z%10);
+        z /= 10;
+    }
+    *v.iter().rev().nth(index as usize).unwrap()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_d_1() {
+        assert_eq!(d_1(5), 5);
+        assert_eq!(d_1(11), 13);
+        assert_eq!(d_1(125), 267);
+    }
+}
+
+fn main () {
+    let args: Vec<String> = env::args().collect();
+    let i = args[1].parse::<u32>().unwrap();
+    let y = d(i);
+    let x = d_1(y);
+    dbg!(i-x, y);
+    dbg!(dc(i));
+}
